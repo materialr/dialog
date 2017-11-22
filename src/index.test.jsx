@@ -122,13 +122,13 @@ test('Dialog > Opens when the \'visible\' prop becomes \'true\'', () => {
 });
 
 test('Dialog > Closes when the \'visible\' prop becomes \'false\'', () => {
-  const destroy = jest.fn();
+  const close = jest.fn();
   const wrapper = mount(<Dialog {...defaultProps} visible />);
-  wrapper.instance().dialogFoundation.destroy = destroy;
+  wrapper.instance().dialogFoundation.close = close;
   wrapper.setProps({ visible: false });
   const expected = 1;
 
-  const actual = destroy.mock.calls.length;
+  const actual = close.mock.calls.length;
 
   expect(actual).toBe(expected);
 });
@@ -148,7 +148,7 @@ test('Dialog > Closes when the component unmounts', () => {
 test('Dialog > Removes the foundation after destroying', () => {
   const wrapper = mount(<Dialog {...defaultProps} visible />);
   const expected = undefined;
-  wrapper.setProps({ visible: false });
+  wrapper.instance().dialogFoundationDestroy();
 
   const actual = wrapper.instance().dialogFoundation;
 

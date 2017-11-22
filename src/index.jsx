@@ -20,6 +20,7 @@ class Dialog extends React.Component {
     this.focusTrap = undefined;
     this.root = undefined;
     this.surface = undefined;
+    this.dialogFoundationClose = this.dialogFoundationClose.bind(this);
     this.dialogFoundationCreate = this.dialogFoundationCreate.bind(this);
     this.dialogFoundationDestroy = this.dialogFoundationDestroy.bind(this);
     this.dialogFoundationOpen = this.dialogFoundationOpen.bind(this);
@@ -43,7 +44,7 @@ class Dialog extends React.Component {
       this.dialogFoundationOpen();
     }
     if (!visible && wasVisible) {
-      this.dialogFoundationDestroy();
+      this.dialogFoundationClose();
     }
   }
   componentWillUnmount() {
@@ -67,6 +68,9 @@ class Dialog extends React.Component {
       'mdc-dialog': true,
       'mdc-dialog--theme-dark': this.props.dark,
     });
+  }
+  dialogFoundationClose() {
+    this.dialogFoundation.close();
   }
   dialogFoundationCreate() {
     const { onAccept, onCancel } = this.props;
