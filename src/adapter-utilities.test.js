@@ -1,16 +1,6 @@
-import {
-  addClassBody,
-  addClassRoot,
-  deregisterInteractionHandler,
-  eventTargetHasClass,
-  isDialog,
-  layoutFooterRipples,
-  registerInteractionHandler,
-  removeClassBody,
-  removeClassRoot,
-  trapFocusOnSurface,
-  untrapFocusOnSurface,
-} from './adapter-utilities';
+import adapterUtilities from './adapter-utilities';
+
+const adapterUtilitiesInstance = adapterUtilities();
 
 const CLASS_NAME_ONE = 'CLASS_NAME_ONE';
 const CLASS_NAME_TWO = 'CLASS_NAME_TWO';
@@ -21,7 +11,7 @@ test('\'addClassBody()\' adds a class to the body element', () => {
   const CLASS_NAME = 'CLASS_NAME';
   const expected = CLASS_NAME;
 
-  addClassBody(body)(CLASS_NAME);
+  adapterUtilitiesInstance.addClassBody(body)(CLASS_NAME);
   const actual = ADD.mock.calls[0][0];
 
   expect(actual).toBe(expected);
@@ -32,8 +22,8 @@ test('\'addClassRoot()\' calls \'updateClassNamesRoot()\' with all classes', () 
   const expectedOne = [CLASS_NAME_ONE];
   const expectedTwo = [CLASS_NAME_ONE, CLASS_NAME_TWO];
 
-  addClassRoot(UPDATE_CLASS_NAMES_ROOT)(CLASS_NAME_ONE);
-  addClassRoot(UPDATE_CLASS_NAMES_ROOT)(CLASS_NAME_TWO);
+  adapterUtilitiesInstance.addClassRoot(UPDATE_CLASS_NAMES_ROOT)(CLASS_NAME_ONE);
+  adapterUtilitiesInstance.addClassRoot(UPDATE_CLASS_NAMES_ROOT)(CLASS_NAME_TWO);
   const actualOne = UPDATE_CLASS_NAMES_ROOT.mock.calls[0][0];
   const actualTwo = UPDATE_CLASS_NAMES_ROOT.mock.calls[1][0];
 
@@ -49,7 +39,7 @@ test('\'deregisterInteractionHandler()\' removes an event listener from an eleme
   const expectedHandler = HANDLER;
   const expectedType = TYPE;
 
-  deregisterInteractionHandler(element)(HANDLER, TYPE);
+  adapterUtilitiesInstance.deregisterInteractionHandler(element)(HANDLER, TYPE);
   const actualHandler = REMOVE_EVENT_LISTENER.mock.calls[0][0];
   const actualType = REMOVE_EVENT_LISTENER.mock.calls[0][1];
 
@@ -63,7 +53,7 @@ test('\'eventTargetHasClass()\' checks whether a target contains a class', () =>
   const target = { classList: { contains: CONTAINS } };
   const expected = CLASS_NAME;
 
-  eventTargetHasClass()(target, CLASS_NAME);
+  adapterUtilitiesInstance.eventTargetHasClass()(target, CLASS_NAME);
   const actual = CONTAINS.mock.calls[0][0];
 
   expect(actual).toBe(expected);
@@ -76,8 +66,8 @@ test('\'isDialog()\' tests whether an element is the dialog', () => {
   const expectedOne = true;
   const expectedTwo = false;
 
-  const actualOne = isDialog(ELEMENT_SURFACE)(ELEMENT_MATCH);
-  const actualTwo = isDialog(ELEMENT_SURFACE)(ELEMENT_FAIL);
+  const actualOne = adapterUtilitiesInstance.isDialog(ELEMENT_SURFACE)(ELEMENT_MATCH);
+  const actualTwo = adapterUtilitiesInstance.isDialog(ELEMENT_SURFACE)(ELEMENT_FAIL);
 
   expect(actualOne).toBe(expectedOne);
   expect(actualTwo).toBe(expectedTwo);
@@ -86,7 +76,7 @@ test('\'isDialog()\' tests whether an element is the dialog', () => {
 test('\'layoutFooterRipples()\' does nothing', () => {
   const expected = undefined;
 
-  const actual = layoutFooterRipples()();
+  const actual = adapterUtilitiesInstance.layoutFooterRipples()();
 
   expect(actual).toBe(expected);
 });
@@ -99,7 +89,7 @@ test('\'registerInteractionHandler()\' adds an event listener to an element', ()
   const expectedHandler = HANDLER;
   const expectedType = TYPE;
 
-  registerInteractionHandler(element)(HANDLER, TYPE);
+  adapterUtilitiesInstance.registerInteractionHandler(element)(HANDLER, TYPE);
   const actualHandler = ADD_EVENT_LISTENER.mock.calls[0][0];
   const actualType = ADD_EVENT_LISTENER.mock.calls[0][1];
 
@@ -113,7 +103,7 @@ test('\'removeClassBody()\' removes a class from the body element', () => {
   const CLASS_NAME = 'CLASS_NAME';
   const expected = CLASS_NAME;
 
-  removeClassBody(body)(CLASS_NAME);
+  adapterUtilitiesInstance.removeClassBody(body)(CLASS_NAME);
   const actual = REMOVE.mock.calls[0][0];
 
   expect(actual).toBe(expected);
@@ -124,8 +114,8 @@ test('\'removeClassRoot()\' calls \'updateClassNamesRoot()\' with all classes', 
   const expectedOne = [CLASS_NAME_ONE];
   const expectedTwo = [];
 
-  removeClassRoot(UPDATE_CLASS_NAMES_ROOT)(CLASS_NAME_TWO);
-  removeClassRoot(UPDATE_CLASS_NAMES_ROOT)(CLASS_NAME_ONE);
+  adapterUtilitiesInstance.removeClassRoot(UPDATE_CLASS_NAMES_ROOT)(CLASS_NAME_TWO);
+  adapterUtilitiesInstance.removeClassRoot(UPDATE_CLASS_NAMES_ROOT)(CLASS_NAME_ONE);
   const actualOne = UPDATE_CLASS_NAMES_ROOT.mock.calls[0][0];
   const actualTwo = UPDATE_CLASS_NAMES_ROOT.mock.calls[1][0];
 
@@ -138,7 +128,7 @@ test('\'trapFocusOnSurface()\' calls \'activate\' on the focusTrap', () => {
   const focusTrap = { activate: ACTIVATE };
   const expected = 1;
 
-  trapFocusOnSurface(focusTrap)();
+  adapterUtilitiesInstance.trapFocusOnSurface(focusTrap)();
   const actual = ACTIVATE.mock.calls.length;
 
   expect(actual).toBe(expected);
@@ -149,7 +139,7 @@ test('\'untrapFocusOnSurface()\' calls \'deactivate\' on the focusTrap', () => {
   const focusTrap = { deactivate: DEACTIVATE };
   const expected = 1;
 
-  untrapFocusOnSurface(focusTrap)();
+  adapterUtilitiesInstance.untrapFocusOnSurface(focusTrap)();
   const actual = DEACTIVATE.mock.calls.length;
 
   expect(actual).toBe(expected);
