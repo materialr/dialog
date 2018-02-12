@@ -1,18 +1,6 @@
 import { MDCDialogFoundation } from '@material/dialog';
 
-import {
-  addClassBody,
-  addClassRoot,
-  deregisterInteractionHandler,
-  eventTargetHasClass,
-  isDialog,
-  layoutFooterRipples,
-  registerInteractionHandler,
-  removeClassBody,
-  removeClassRoot,
-  trapFocusOnSurface,
-  untrapFocusOnSurface,
-} from './adapter-utilities';
+import adapterUtilities from './adapter-utilities';
 
 export default ({
   elementRoot,
@@ -21,8 +9,22 @@ export default ({
   onAccept,
   onCancel,
   updateClassNamesRoot,
-}) =>
-  new MDCDialogFoundation({
+}) => {
+  const {
+    addClassBody,
+    addClassRoot,
+    deregisterInteractionHandler,
+    eventTargetHasClass,
+    isDialog,
+    layoutFooterRipples,
+    registerInteractionHandler,
+    removeClassBody,
+    removeClassRoot,
+    trapFocusOnSurface,
+    untrapFocusOnSurface,
+  } = adapterUtilities();
+
+  return new MDCDialogFoundation({
     addClass: addClassRoot(updateClassNamesRoot),
     removeClass: removeClassRoot(updateClassNamesRoot),
     addBodyClass: addClassBody(document.body),
@@ -47,3 +49,4 @@ export default ({
     isDialog: isDialog(elementSurface),
     layoutFooterRipples: layoutFooterRipples(),
   });
+};
