@@ -68,17 +68,14 @@ test('Dialog > Passed the ripple properties to both buttons', () => {
 
 test('Dialog > Builds all classNames from props', () => {
   const wrapper = shallow(
-    <Dialog {...defaultProps} dark scrollable />,
+    <Dialog {...defaultProps} scrollable />,
     { disableLifecycleMethods: true },
   );
   const expectedBody = 'mdc-dialog__body mdc-dialog__body--scrollable';
-  const expectedRoot = 'mdc-dialog mdc-dialog--theme-dark';
 
   const actualBody = wrapper.find('#materialr-dialog-description').props().className;
-  const actualRoot = wrapper.props().className;
 
   expect(actualBody).toBe(expectedBody);
-  expect(actualRoot).toBe(expectedRoot);
 });
 
 test('Dialog > Creates a focus trap', () => {
