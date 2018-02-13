@@ -10,6 +10,11 @@ import '@material/dialog/mdc-dialog.scss';
 import dialogFoundation from './foundation';
 
 class Dialog extends React.Component {
+  static getDefaultClassNames() {
+    return classnames({
+      'mdc-dialog': true,
+    });
+  }
   constructor(props) {
     super(props);
     this.state = {
@@ -28,7 +33,6 @@ class Dialog extends React.Component {
     this.getClassNames = this.getClassNames.bind(this);
     this.getClassNamesAsString = this.getClassNamesAsString.bind(this);
     this.getClassNamesBodyAsString = this.getClassNamesBodyAsString.bind(this);
-    this.getClassNamesFromProps = this.getClassNamesFromProps.bind(this);
     this.updateClassNamesRoot = this.updateClassNamesRoot.bind(this);
   }
   componentDidMount() {
@@ -54,19 +58,13 @@ class Dialog extends React.Component {
     return this.state.classNamesRoot.join(' ');
   }
   getClassNamesAsString() {
-    return `${this.getClassNamesFromProps()} ${this.getClassNames()} ${this.props.className}`
+    return `${Dialog.getDefaultClassNames()} ${this.getClassNames()} ${this.props.className}`
       .trim().replace('  ', ' ');
   }
   getClassNamesBodyAsString() {
     return classnames({
       'mdc-dialog__body': true,
       'mdc-dialog__body--scrollable': this.props.scrollable,
-    });
-  }
-  getClassNamesFromProps() {
-    return classnames({
-      'mdc-dialog': true,
-      'mdc-dialog--theme-dark': this.props.dark,
     });
   }
   dialogFoundationClose() {
@@ -145,7 +143,6 @@ class Dialog extends React.Component {
 Dialog.propTypes = {
   body: PropTypes.string.isRequired,
   className: PropTypes.string,
-  dark: PropTypes.bool,
   labelAccept: PropTypes.string.isRequired,
   labelCancel: PropTypes.string.isRequired,
   onAccept: PropTypes.func.isRequired,
@@ -159,7 +156,6 @@ Dialog.propTypes = {
 
 Dialog.defaultProps = {
   className: '',
-  dark: false,
   rippleCentered: false,
   rippleEnabled: false,
   scrollable: false,
