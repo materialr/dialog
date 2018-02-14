@@ -71,11 +71,61 @@ test('Dialog > Builds all classNames from props', () => {
     <Dialog {...defaultProps} scrollable />,
     { disableLifecycleMethods: true },
   );
-  const expectedBody = 'mdc-dialog__body mdc-dialog__body--scrollable';
+  const expected = 'mdc-dialog__body mdc-dialog__body--scrollable';
 
-  const actualBody = wrapper.find('#materialr-dialog-description').props().className;
+  const actual = wrapper.find('#materialr-dialog-description').props().className;
 
-  expect(actualBody).toBe(expectedBody);
+  expect(actual).toBe(expected);
+});
+
+test('Dialog > Builds default accept button classNames', () => {
+  const wrapper = shallow(
+    <Dialog {...defaultProps} />,
+    { disableLifecycleMethods: true },
+  );
+  const expected = 'mdc-dialog__footer__button mdc-dialog__footer__button--accept';
+
+  const actual = wrapper.find(Button).at(1).props().className;
+
+  expect(actual).toBe(expected);
+});
+
+test('Dialog > Builds extra accept button classNames', () => {
+  const wrapper = shallow(
+    <Dialog {...defaultProps} secondaryAccept />,
+    { disableLifecycleMethods: true },
+  );
+  const expected = 'mdc-dialog__footer__button mdc-dialog__footer__button--accept ' +
+    'mdc-dialog__action';
+
+  const actual = wrapper.find(Button).at(1).props().className;
+
+  expect(actual).toBe(expected);
+});
+
+test('Dialog > Builds default cancel button classNames', () => {
+  const wrapper = shallow(
+    <Dialog {...defaultProps} />,
+    { disableLifecycleMethods: true },
+  );
+  const expected = 'mdc-dialog__footer__button mdc-dialog__footer__button--cancel';
+
+  const actual = wrapper.find(Button).at(0).props().className;
+
+  expect(actual).toBe(expected);
+});
+
+test('Dialog > Builds extra cancel button classNames', () => {
+  const wrapper = shallow(
+    <Dialog {...defaultProps} secondaryCancel />,
+    { disableLifecycleMethods: true },
+  );
+  const expected = 'mdc-dialog__footer__button mdc-dialog__footer__button--cancel ' +
+    'mdc-dialog__action';
+
+  const actual = wrapper.find(Button).at(0).props().className;
+
+  expect(actual).toBe(expected);
 });
 
 test('Dialog > Creates a focus trap', () => {
