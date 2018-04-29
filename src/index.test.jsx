@@ -1,11 +1,10 @@
-import { util } from '@material/dialog';
+import * as dialog from '@material/dialog';
+import { strings } from '@material/dialog/constants';
 import Button from '@materialr/button';
 import { mount, shallow } from 'enzyme';
-import focusTrap from 'focus-trap';
 import React from 'react';
 
 import Dialog from './index';
-import dialogFoundation from './foundation';
 
 const BODY = 'BODY';
 const LABEL_ACCEPT = 'LABEL_ACCEPT';
@@ -13,74 +12,96 @@ const LABEL_CANCEL = 'LABEL_CANCEL';
 const ON_ACCEPT = () => 'ON_ACCEPT';
 const ON_CANCEL = () => 'ON_CANCEL';
 const TITLE = 'TITLE';
-const defaultProps = {
-  body: BODY,
-  labelAccept: LABEL_ACCEPT,
-  labelCancel: LABEL_CANCEL,
-  onAccept: ON_ACCEPT,
-  onCancel: ON_CANCEL,
-  title: TITLE,
-};
 
-test('Dialog > Renders the correct default children', () => {
-  const wrapper = mount(<Dialog {...defaultProps} />, { disableLifecycleMethods: true });
-  const expectedBody = BODY;
-  const expectedLabelAccept = LABEL_ACCEPT;
-  const expectedLabelCancel = LABEL_CANCEL;
-  const expectedTitle = TITLE;
-
-  const actualBody = wrapper.find('#materialr-dialog-description').text();
-  const actualLabelAccept = wrapper.find(Button).at(1).text();
-  const actualLabelCancel = wrapper.find(Button).at(0).text();
-  const actualTitle = wrapper.find('#materialr-dialog-label').text();
-
-  expect(actualBody).toBe(expectedBody);
-  expect(actualLabelAccept).toBe(expectedLabelAccept);
-  expect(actualLabelCancel).toBe(expectedLabelCancel);
-  expect(actualTitle).toBe(expectedTitle);
-});
-
-test('Dialog > Passed the ripple properties to both buttons', () => {
-  const RIPPLE_CENTERED = true;
-  const RIPPLE_ENABLED = true;
+test('Renders the default classNames', () => {
   const wrapper = shallow(
-    <Dialog {...defaultProps} rippleCentered={RIPPLE_CENTERED} rippleEnabled={RIPPLE_ENABLED} />,
+    <Dialog
+      body={BODY}
+      labelAccept={LABEL_ACCEPT}
+      labelCancel={LABEL_CANCEL}
+      onAccept={ON_ACCEPT}
+      onCancel={ON_CANCEL}
+      title={TITLE}
+    />,
     { disableLifecycleMethods: true },
   );
-  const buttons = wrapper.find(Button);
-  const buttonOne = buttons.at(0);
-  const buttonTwo = buttons.at(1);
-  const expectedCenteredOne = RIPPLE_CENTERED;
-  const expectedCenteredTwo = RIPPLE_CENTERED;
-  const expectedEnabledOne = RIPPLE_ENABLED;
-  const expectedEnabledTwo = RIPPLE_ENABLED;
+  const expected = 'mdc-dialog';
 
-  const actualCenteredOne = buttonOne.props().rippleCentered;
-  const actualCenteredTwo = buttonTwo.props().rippleCentered;
-  const actualEnabledOne = buttonOne.props().rippleEnabled;
-  const actualEnabledTwo = buttonTwo.props().rippleEnabled;
-
-  expect(actualCenteredOne).toBe(expectedCenteredOne);
-  expect(actualCenteredTwo).toBe(expectedCenteredTwo);
-  expect(actualEnabledOne).toBe(expectedEnabledOne);
-  expect(actualEnabledTwo).toBe(expectedEnabledTwo);
-});
-
-test('Dialog > Builds all classNames from props', () => {
-  const wrapper = shallow(
-    <Dialog {...defaultProps} scrollable />,
-    { disableLifecycleMethods: true },
-  );
-  const expected = 'mdc-dialog__body mdc-dialog__body--scrollable';
-
-  const actual = wrapper.find('#materialr-dialog-description').props().className;
+  const actual = wrapper.props().className;
 
   expect(actual).toBe(expected);
 });
 
-test('Dialog > Builds default accept button classNames', () => {
+test('Renders additional classNames from the \'className\' prop', () => {
+  const CLASS_NAME = 'CLASS_NAME';
   const wrapper = shallow(
-    <Dialog {...defaultProps} />,
+    <Dialog
+      body={BODY}
+      className={CLASS_NAME}
+      labelAccept={LABEL_ACCEPT}
+      labelCancel={LABEL_CANCEL}
+      onAccept={ON_ACCEPT}
+      onCancel={ON_CANCEL}
+      title={TITLE}
+    />,
+    { disableLifecycleMethods: true },
+  );
+  const expected = `mdc-dialog ${CLASS_NAME}`;
+
+  const actual = wrapper.props().className;
+
+  expect(actual).toBe(expected);
+});
+
+test('Renders the default body classNames', () => {
+  const wrapper = shallow(
+    <Dialog
+      body={BODY}
+      labelAccept={LABEL_ACCEPT}
+      labelCancel={LABEL_CANCEL}
+      onAccept={ON_ACCEPT}
+      onCancel={ON_CANCEL}
+      title={TITLE}
+    />,
+    { disableLifecycleMethods: true },
+  );
+  const expected = 'mdc-dialog__body';
+
+  const actual = wrapper.find('section').props().className;
+
+  expect(actual).toBe(expected);
+});
+
+test('Renders a scrollable body', () => {
+  const wrapper = shallow(
+    <Dialog
+      body={BODY}
+      labelAccept={LABEL_ACCEPT}
+      labelCancel={LABEL_CANCEL}
+      onAccept={ON_ACCEPT}
+      onCancel={ON_CANCEL}
+      scrollable
+      title={TITLE}
+    />,
+    { disableLifecycleMethods: true },
+  );
+  const expected = 'mdc-dialog__body mdc-dialog__body--scrollable';
+
+  const actual = wrapper.find('section').props().className;
+
+  expect(actual).toBe(expected);
+});
+
+test('Renders the default accept button classNames', () => {
+  const wrapper = shallow(
+    <Dialog
+      body={BODY}
+      labelAccept={LABEL_ACCEPT}
+      labelCancel={LABEL_CANCEL}
+      onAccept={ON_ACCEPT}
+      onCancel={ON_CANCEL}
+      title={TITLE}
+    />,
     { disableLifecycleMethods: true },
   );
   const expected = 'mdc-dialog__footer__button mdc-dialog__footer__button--accept';
@@ -90,9 +111,17 @@ test('Dialog > Builds default accept button classNames', () => {
   expect(actual).toBe(expected);
 });
 
-test('Dialog > Builds extra accept button classNames', () => {
+test('Renders the secondary accept button classNames', () => {
   const wrapper = shallow(
-    <Dialog {...defaultProps} secondaryAccept />,
+    <Dialog
+      body={BODY}
+      labelAccept={LABEL_ACCEPT}
+      labelCancel={LABEL_CANCEL}
+      onAccept={ON_ACCEPT}
+      onCancel={ON_CANCEL}
+      secondaryAccept
+      title={TITLE}
+    />,
     { disableLifecycleMethods: true },
   );
   const expected = 'mdc-dialog__footer__button mdc-dialog__footer__button--accept ' +
@@ -103,9 +132,16 @@ test('Dialog > Builds extra accept button classNames', () => {
   expect(actual).toBe(expected);
 });
 
-test('Dialog > Builds default cancel button classNames', () => {
+test('Renders the default cancel button classNames', () => {
   const wrapper = shallow(
-    <Dialog {...defaultProps} />,
+    <Dialog
+      body={BODY}
+      labelAccept={LABEL_ACCEPT}
+      labelCancel={LABEL_CANCEL}
+      onAccept={ON_ACCEPT}
+      onCancel={ON_CANCEL}
+      title={TITLE}
+    />,
     { disableLifecycleMethods: true },
   );
   const expected = 'mdc-dialog__footer__button mdc-dialog__footer__button--cancel';
@@ -115,9 +151,17 @@ test('Dialog > Builds default cancel button classNames', () => {
   expect(actual).toBe(expected);
 });
 
-test('Dialog > Builds extra cancel button classNames', () => {
+test('Renders the secondary cancel button classNames', () => {
   const wrapper = shallow(
-    <Dialog {...defaultProps} secondaryCancel />,
+    <Dialog
+      body={BODY}
+      labelAccept={LABEL_ACCEPT}
+      labelCancel={LABEL_CANCEL}
+      onAccept={ON_ACCEPT}
+      onCancel={ON_CANCEL}
+      secondaryCancel
+      title={TITLE}
+    />,
     { disableLifecycleMethods: true },
   );
   const expected = 'mdc-dialog__footer__button mdc-dialog__footer__button--cancel ' +
@@ -128,76 +172,116 @@ test('Dialog > Builds extra cancel button classNames', () => {
   expect(actual).toBe(expected);
 });
 
-test('Dialog > Creates a focus trap', () => {
-  const wrapper = shallow(<Dialog {...defaultProps} />);
-  const { accept, focusTrap: focusTrapInstance, surface } = wrapper.instance();
-  const expected = util.createFocusTrapInstance(surface, accept, focusTrap);
+test('Passes through the correct props', () => {
+  const wrapper = shallow(
+    <Dialog
+      body={BODY}
+      labelAccept={LABEL_ACCEPT}
+      labelCancel={LABEL_CANCEL}
+      onAccept={ON_ACCEPT}
+      onCancel={ON_CANCEL}
+      title={TITLE}
+    />,
+    { disableLifecycleMethods: true },
+  );
+  const expectedBody = BODY;
+  const expectedLabelAccept = LABEL_ACCEPT;
+  const expectedLabelCancel = LABEL_CANCEL;
+  const expectedTitle = TITLE;
 
-  const actual = focusTrapInstance;
+  const buttons = wrapper.find(Button);
+  const buttonAcceptProps = buttons.at(1).props();
+  const buttonCancelProps = buttons.at(0).props();
+  const actualBody = wrapper.find('section').props().children;
+  const actualLabelAccept = buttonAcceptProps.children;
+  const actualLabelCancel = buttonCancelProps.children;
+  const actualTitle = wrapper.find('h2').text();
 
-  expect(JSON.stringify(actual)).toEqual(JSON.stringify(expected));
+  expect(actualBody).toBe(expectedBody);
+  expect(actualLabelAccept).toBe(expectedLabelAccept);
+  expect(actualLabelCancel).toBe(expectedLabelCancel);
+  expect(actualTitle).toBe(expectedTitle);
 });
 
-test('Dialog > Creates a dialog foundation', () => {
-  const wrapper = mount(<Dialog {...defaultProps} visible />);
+test('Creates the MDCDialog component on mount', () => {
+  const listen = jest.fn();
+  const show = jest.fn();
+  const MDCDialog = jest.fn();
+  MDCDialog.mockImplementation(() => ({ listen, show }));
+  dialog.MDCDialog = MDCDialog;
+  const wrapper = mount(
+    <Dialog
+      body={BODY}
+      labelAccept={LABEL_ACCEPT}
+      labelCancel={LABEL_CANCEL}
+      onAccept={ON_ACCEPT}
+      onCancel={ON_CANCEL}
+      title={TITLE}
+    />,
+  );
   const instance = wrapper.instance();
-  const { focusTrap: focusTrapInstance, root, surface, updateClassNamesRoot } = instance;
-  const expected = dialogFoundation({
-    elementRoot: root,
-    elementSurface: surface,
-    focusTrap: focusTrapInstance,
-    onAccept: ON_ACCEPT,
-    onCancel: ON_CANCEL,
-    updateClassNamesRoot,
-  });
-  expected.open();
+  const expectedListenAcceptOne = strings.ACCEPT_EVENT;
+  const expectedListenAcceptTwo = ON_ACCEPT;
+  const expectedListenCancelOne = strings.CANCEL_EVENT;
+  const expectedListenCancelTwo = ON_CANCEL;
+  const expectedMDCDialog = instance.elementRoot;
+  const expectedShow = 1;
 
-  const actual = wrapper.instance().dialogFoundation;
+  const mockListenCalls = listen.mock.calls;
+  const mockListenCallsAccept = mockListenCalls[0];
+  const mockListenCallsCancel = mockListenCalls[1];
+  const actualListenAcceptOne = mockListenCallsAccept[0];
+  const actualListenAcceptTwo = mockListenCallsAccept[1];
+  const actualListenCancelOne = mockListenCallsCancel[0];
+  const actualListenCancelTwo = mockListenCallsCancel[1];
+  const actualMDCDialog = MDCDialog.mock.calls[0][0];
+  const actualShow = show.mock.calls.length;
 
-  expect(JSON.stringify(actual)).toEqual(JSON.stringify(expected));
+  expect(actualMDCDialog).toBe(expectedMDCDialog);
+  expect(actualListenAcceptOne).toBe(expectedListenAcceptOne);
+  expect(actualListenAcceptTwo).toBe(expectedListenAcceptTwo);
+  expect(actualListenCancelOne).toBe(expectedListenCancelOne);
+  expect(actualListenCancelTwo).toBe(expectedListenCancelTwo);
+  expect(actualShow).toBe(expectedShow);
 });
 
-test('Dialog > Opens when the \'visible\' prop becomes \'true\'', () => {
-  const wrapper = mount(<Dialog {...defaultProps} />);
-  wrapper.instance().dialogFoundation.open = jest.fn();
-  wrapper.setProps({ visible: true });
-  const expected = 1;
-
-  const actual = wrapper.instance().dialogFoundation.open.mock.calls.length;
-
-  expect(actual).toBe(expected);
-});
-
-test('Dialog > Closes when the \'visible\' prop becomes \'false\'', () => {
-  const close = jest.fn();
-  const wrapper = mount(<Dialog {...defaultProps} visible />);
-  wrapper.instance().dialogFoundation.close = close;
-  wrapper.setProps({ visible: false });
-  const expected = 1;
-
-  const actual = close.mock.calls.length;
-
-  expect(actual).toBe(expected);
-});
-
-test('Dialog > Closes when the component unmounts', () => {
+test('Destroys the MDCDialog component on unmount', () => {
   const destroy = jest.fn();
-  const wrapper = mount(<Dialog {...defaultProps} visible />);
-  wrapper.instance().dialogFoundation.destroy = destroy;
-  const expected = 1;
+  const listen = () => {};
+  const show = () => {};
+  const unlisten = jest.fn();
+  const MDCDialog = jest.fn();
+  MDCDialog.mockImplementation(() => ({ destroy, listen, show, unlisten }));
+  dialog.MDCDialog = MDCDialog;
+  const wrapper = mount(
+    <Dialog
+      body={BODY}
+      labelAccept={LABEL_ACCEPT}
+      labelCancel={LABEL_CANCEL}
+      onAccept={ON_ACCEPT}
+      onCancel={ON_CANCEL}
+      title={TITLE}
+    />,
+  );
+  const expectedDestroy = 1;
+  const expectedUnlistenAcceptOne = strings.ACCEPT_EVENT;
+  const expectedUnlistenAcceptTwo = ON_ACCEPT;
+  const expectedUnlistenCancelOne = strings.CANCEL_EVENT;
+  const expectedUnlistenCancelTwo = ON_CANCEL;
 
   wrapper.unmount();
-  const actual = destroy.mock.calls.length;
+  const actualDestroy = destroy.mock.calls.length;
+  const mockUnlistenCalls = unlisten.mock.calls;
+  const mockUnlistenCallsAccept = mockUnlistenCalls[0];
+  const mockUnlistenCallsCancel = mockUnlistenCalls[1];
+  const actualUnlistenAcceptOne = mockUnlistenCallsAccept[0];
+  const actualUnlistenAcceptTwo = mockUnlistenCallsAccept[1];
+  const actualUnlistenCancelOne = mockUnlistenCallsCancel[0];
+  const actualUnlistenCancelTwo = mockUnlistenCallsCancel[1];
 
-  expect(actual).toBe(expected);
-});
-
-test('Dialog > Removes the foundation after destroying', () => {
-  const wrapper = mount(<Dialog {...defaultProps} visible />);
-  const expected = undefined;
-  wrapper.instance().dialogFoundationDestroy();
-
-  const actual = wrapper.instance().dialogFoundation;
-
-  expect(actual).toBe(expected);
+  expect(actualDestroy).toBe(expectedDestroy);
+  expect(actualUnlistenAcceptOne).toBe(expectedUnlistenAcceptOne);
+  expect(actualUnlistenAcceptTwo).toBe(expectedUnlistenAcceptTwo);
+  expect(actualUnlistenCancelOne).toBe(expectedUnlistenCancelOne);
+  expect(actualUnlistenCancelTwo).toBe(expectedUnlistenCancelTwo);
 });
