@@ -5,6 +5,8 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import '@material/dialog/mdc-dialog.scss';
+
 class Dialog extends React.Component {
   constructor(props) {
     super(props);
