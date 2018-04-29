@@ -6,7 +6,7 @@
   "scripts": {
     "build:production": "babel src --out-dir lib --ignore **/*.test.js,**/*.test.jsx",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
-    "lint": "eslint --ext .js .",
+    "lint": "eslint --ext .js --ext .jsx .",
     "semantic-release": "semantic-release",
     "test": "npm run lint && npm run test:vulnerabilities && npm run test:scripts",
     "test:scripts": "jest --coverage --config ./jest.config.json",
@@ -28,16 +28,16 @@
   },
   "homepage": "https://github.com/materialr/dialog#readme",
   "dependencies": {
-    "@material/dialog": "^0.34.1",
-    "@materialr/button": "^1.0.1",
+    "@material/dialog": "^0.35.0",
+    "@materialr/button": "^2.0.0",
     "classnames": "^2.2.5",
     "focus-trap": "^2.4.3",
     "prop-types": "^15.6.1",
-    "react": "^16.3.1"
+    "react": "^16.3.2"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
+    "babel-core": "^6.26.3",
     "babel-jest": "^22.4.3",
     "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.24.1",
@@ -52,7 +52,7 @@
     "eslint-plugin-react": "^7.7.0",
     "jest": "^22.4.3",
     "nsp": "^3.2.1",
-    "react-dom": "^16.3.1",
+    "react-dom": "^16.3.2",
     "semantic-release": "^15.1.7"
   }
 }
