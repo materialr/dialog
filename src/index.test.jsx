@@ -285,3 +285,24 @@ test('Destroys the MDCDialog component on unmount', () => {
   expect(actualUnlistenCancelOne).toBe(expectedUnlistenCancelOne);
   expect(actualUnlistenCancelTwo).toBe(expectedUnlistenCancelTwo);
 });
+
+test('Passes through additional properties', () => {
+  const DATA_QA = 'DATA_QA';
+  const wrapper = shallow(
+    <Dialog
+      body={BODY}
+      data-qa={DATA_QA}
+      labelAccept={LABEL_ACCEPT}
+      labelCancel={LABEL_CANCEL}
+      onAccept={ON_ACCEPT}
+      onCancel={ON_CANCEL}
+      title={TITLE}
+    />,
+    { disableLifecycleMethods: true },
+  );
+  const expected = DATA_QA;
+
+  const actual = wrapper.props()['data-qa'];
+
+  expect(actual).toBe(expected);
+});

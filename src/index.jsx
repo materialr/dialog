@@ -65,7 +65,19 @@ class Dialog extends React.Component {
       getClassNamesAccept,
       getClassNamesBody,
       getClassNamesCancel,
-      props: { body, labelAccept, labelCancel, title },
+      props: {
+        body,
+        className,
+        labelAccept,
+        labelCancel,
+        onAccept,
+        onCancel,
+        secondaryAccept,
+        secondaryCancel,
+        scrollable,
+        title,
+        ...props
+      },
     } = this;
     return (
       <aside
@@ -74,6 +86,7 @@ class Dialog extends React.Component {
         className={getClassNames()}
         ref={(elementRoot) => { this.elementRoot = elementRoot; }}
         role="alertdialog"
+        {...props}
       >
         <div className="mdc-dialog__surface">
           <header className="mdc-dialog__header">
